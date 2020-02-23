@@ -18,4 +18,27 @@ smoke[1:5,c('Age','Sex','Grade','RuralUrban','Race', 'Tried_cigarette_smkg_even'
 smokeFormats[smokeFormats$colName == 'Tried_cigarette_smkg_even', ]
 
 # Change value 1 to yes, 2 to no:
-smoke$ifsmoked = factor(smoke$Tried_cigarette_smkg_even, levels = 1:2, labels = c('yes','no'))
+smoke$ifsmoked = factor(smoke$Tried_cigarette_smkg_even, levels = 1:2, labels = c('Y','N'))
+
+# make two way tables (for age and grade):
+xtabs(~smoke$Age+smoke$Grade)
+
+# make two way tables (for age and grade):
+xtabs(~smoke$everSmoke + smoke$Race)
+
+# make a sub dataset (cleaned)
+smoke2 <- smoke %>% 
+  # drop missings:
+  filter(!is.na(Race),
+         !is.na(everSmoke),
+         !is.na(Age),
+         !is.na(Grade), 
+         # grade 8 means ungraded or other grade, should be dropped:
+         Grade != 8,
+         # since age 9, 10 barely have no student smoking:
+         !(Age %in% c(9,10))) %>%
+  # make grade "1" to "6":
+  mutate(Grade = Grade + 5)
+
+# table
+xtabs(~smoke2$Grade + smokeSub$Age)
