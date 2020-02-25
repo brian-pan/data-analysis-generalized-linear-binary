@@ -62,3 +62,14 @@ dim(smoke3)
 smoke3 = na.omit(smoke3)
 dim(smoke3)
 
+# make 2 new cols naming total and proportion
+smoke3$total <- smoke3$yes + smoke3$no
+smoke3$prop <- smoke3$yes/smoke3$total
+
+# ggplot
+smoke3 %>% 
+  ggplot(aes(x = Age, y = prop, color = Race, shape = Sex)) +
+  geom_point(size = 2) +
+  scale_shape_manual(values = c(1, 2)) +T
+scale_color_brewer(palette = "Set2") +
+  theme_minimal()
