@@ -42,3 +42,23 @@ smoke2 <- smoke %>%
 
 # table
 xtabs(~smoke2$Grade + smokeSub$Age)
+
+# reshape the data (part 1)
+smoke3 <- smoke2 %>% 
+  select(Age, Sex, Race, RuralUrban, everSmoke) %>% 
+  group_by_all() %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = everSmoke, values_from = n) %>% 
+  mutate(no = ifelse(is.na(no), 0, no),
+         yes = ifelse(is.na(yes), 0, yes)) %>% 
+  na.omit()
+
+# reshape the data (part 2)
+smoke3 = reshape2::dcast(smoke2,
+                         Age + Sex + Race + RuralUrban ~ everSmoke,
+                         length)
+dim(smoke3)
+
+smoke3 = na.omit(smoke3)
+dim(smoke3)
+
