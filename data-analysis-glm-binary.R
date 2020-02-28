@@ -73,3 +73,13 @@ smoke3 %>%
   scale_shape_manual(values = c(1, 2)) +T
 scale_color_brewer(palette = "Set2") +
   theme_minimal()
+
+
+smoke3$y <- cbind(smoke3$yes, smoke3$no)
+
+head(smoke3)
+
+# fit binary model
+smokeFit <- glm(y ~ Race + Sex + Age + RuralUrban, family = binomial(link = "logit"), data = smokeAgg)
+
+summary(smokeFit)
