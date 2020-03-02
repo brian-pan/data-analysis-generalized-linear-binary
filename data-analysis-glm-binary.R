@@ -83,3 +83,12 @@ head(smoke3)
 smokeFit <- glm(y ~ Race + Sex + Age + RuralUrban, family = binomial(link = "logit"), data = smokeAgg)
 
 summary(smokeFit)
+
+# head 10 lines
+head(model.matrix(smokeFit), n=20)
+
+# make 0 year old the reference group in new variable ageC
+smoke3$ageC = smoke3$Age - 15
+smokeGlm3 = glm(y ~ ageC + Sex + Race + RuralUrban, 
+                family=binomial(link='logit'), data = smoke3)
+summary(smokeFit2)$coef
