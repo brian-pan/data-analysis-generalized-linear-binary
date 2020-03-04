@@ -92,3 +92,9 @@ smoke3$ageC = smoke3$Age - 15
 smokeGlm3 = glm(y ~ ageC + Sex + Race + RuralUrban, 
                 family=binomial(link='logit'), data = smoke3)
 summary(smokeFit2)$coef
+
+# baseline table
+smokeOddsRatio = exp(smokeTable[,c('Estimate','lower','upper')])
+rownames(smokeOddsRatio)[1] = 'baseline prob'
+smokeOddsRatio[1,] = smokeOddsRatio[1,]/(1+smokeOddsRatio[,1])
+smokeOddsRatio
